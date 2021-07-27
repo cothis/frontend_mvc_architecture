@@ -8,3 +8,6 @@ mainView.render();
 
 const anotherView = new AnotherView(app);
 anotherView.render();
+
+const anotherView2 = new AnotherView(app);
+anotherView2.render();
