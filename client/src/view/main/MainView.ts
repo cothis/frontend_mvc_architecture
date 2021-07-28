@@ -1,6 +1,6 @@
 import View from '../view';
 import html from '../../utils/jsx';
-import { userController } from '../../controller/UserController';
+import { userController } from '../../controller/MainController';
 
 export default class MainView extends View {
   constructor(root: HTMLElement) {
@@ -19,6 +19,11 @@ export default class MainView extends View {
     userController.requestSetUser({ name: value });
   }
 
+  onMenuChange(e: Event) {
+    const value: string = (<HTMLInputElement>e.target).value;
+    userController.requestSetMenu({ current: value });
+  }
+
   createDom(): HTMLElement {
     return html`<div>
       메인화면입니다.
@@ -33,7 +38,16 @@ export default class MainView extends View {
           <span>유저 이름</span>
           <input type="text" onInput=${this.onInputName} />
         </label>
-        <button type="button">controller 호출</button>
+      </div>
+      <div onChange=${this.onMenuChange}>
+        <label>
+          <span>menu1</span>
+          <input type="radio" name="menu" value="menu1" />
+        </label>
+        <label>
+          <span>menu2</span>
+          <input type="radio" name="menu" value="menu2" />
+        </label>
       </div>
     </div>`;
   }

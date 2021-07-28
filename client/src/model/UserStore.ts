@@ -1,27 +1,25 @@
-interface Base {}
+import { BaseState } from './store';
 
-export interface State {
+export interface UserState extends BaseState {
   id: string;
   name: string;
 }
 
 class UserStore {
-  private state: Base;
+  private state: UserState;
 
   constructor() {
     this.state = { id: '', name: '' };
   }
 
-  getUser = <T extends Base>(): Promise<T> => {
-    return new Promise<T>((resolve) =>
-      setTimeout(() => resolve(<T>this.state), 300)
-    );
+  getUser = (): Promise<UserState> => {
+    return new Promise((resolve) => setTimeout(() => resolve(this.state), 300));
   };
 
-  setUser = <T extends Base>(user: T): Promise<boolean> => {
+  setUser = (user: Partial<UserState>): Promise<boolean> => {
     return new Promise<boolean>((resolve) => {
       setTimeout(() => {
-        this.state = user;
+        this.state = { ...this.state, ...user };
         resolve(true);
       }, 500);
     });

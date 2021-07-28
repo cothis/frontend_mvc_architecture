@@ -1,21 +1,20 @@
 import View from '../view';
 import html from '../../utils/jsx';
 import { userController } from '../../controller/MainController';
-import { UserState } from '@/model/UserStore';
+import { MenuState } from '../../model/MenuStore';
 
-export default class AnotherView extends View {
-  private state: UserState;
+export default class MenuView extends View {
+  private state: MenuState;
 
   constructor(root: HTMLElement) {
     super(root);
     this.state = {
-      id: '여기 바인딩 되어야 합니다.',
-      name: 'hihi',
+      current: 'hi',
     };
-    userController.subscribe(this, this.setState, 'user');
+    userController.subscribe(this, this.setState, 'menu');
   }
 
-  setState(newState: UserState) {
+  setState(newState: MenuState) {
     const nextState = { ...this.state, ...newState };
     if (this.state === nextState) {
       return;
@@ -26,10 +25,9 @@ export default class AnotherView extends View {
 
   createDom(): HTMLElement {
     return html`<div>
-      또다른 View입니다.
+      menu View입니다.
       <div>
-        <div>${this.state.id}</div>
-        <div>${this.state.name}</div>
+        <div>${this.state.current}</div>
       </div>
     </div>`;
   }
