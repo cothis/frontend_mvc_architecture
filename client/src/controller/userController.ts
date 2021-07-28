@@ -1,29 +1,30 @@
-import { userStore, State } from '../model/UserStore';
+import { userStore, State as UserState } from '../model/UserStore';
 import View from '../view/view';
 
 class UserController {
-  private subscribers: Map<View, Function>;
+  private subscribers: Map<[string, View], Function>;
 
   constructor() {
     this.subscribers = new Map();
   }
 
-  subscribe(view: View, cb: Function) {
-    this.subscribers.set(view, cb);
+  subscribe<State>(view: View, cb: Function, key: keyof State) {
+    this.subscribers.set([key as string, view], cb);
   }
 
   unsubscribe(view: View) {
-    this.subscribers.delete(view);
+    // this.subscribers.delete(view);
   }
 
   async notify() {
     const user = await this.requestGetUser();
-    this.subscribers.forEach((cb, view) => {
+    this.subscribers.forEach((cb, [key, view]) => {
+      console.log(key, view);
       cb.call(view, user);
     });
   }
 
-  async requestSetUser(user: Partial<State>) {
+  async requestSetUser(user: Partial<UserState>) {
     const result = await userStore.setUser(user);
     if (result) this.notify();
   }

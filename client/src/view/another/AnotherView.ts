@@ -12,7 +12,7 @@ export default class AnotherView extends View {
       id: '여기 바인딩 되어야 합니다.',
       name: 'hihi',
     };
-    userController.subscribe(this, this.setState);
+    userController.subscribe<State>(this, this.setState, 'id');
   }
 
   setState(newState: State) {
