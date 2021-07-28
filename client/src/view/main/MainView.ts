@@ -10,7 +10,13 @@ export default class MainView extends View {
   onInput(e: Event) {
     const value: string = (<HTMLInputElement>e.target).value;
     console.log(value);
-    userController.requestSetId(value);
+    userController.requestSetUser({ id: value });
+  }
+
+  onInputName(e: Event) {
+    const value: string = (<HTMLInputElement>e.target).value;
+    console.log(value);
+    userController.requestSetUser({ name: value });
   }
 
   createDom(): HTMLElement {
@@ -22,6 +28,10 @@ export default class MainView extends View {
         <label>
           <span>유저 아이디</span>
           <input type="text" onInput=${this.onInput} />
+        </label>
+        <label>
+          <span>유저 이름</span>
+          <input type="text" onInput=${this.onInputName} />
         </label>
         <button type="button">controller 호출</button>
       </div>

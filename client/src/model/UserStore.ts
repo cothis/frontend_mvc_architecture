@@ -1,30 +1,31 @@
-export class UserStore {
-  private static instance: UserStore;
-  private id: string;
+interface Base {}
 
-  private constructor() {
-    this.id = '';
+export interface State {
+  id: string;
+  name: string;
+}
+
+class UserStore {
+  private state: Base;
+
+  constructor() {
+    this.state = { id: '', name: '' };
   }
 
-  static getInstance() {
-    if (!UserStore.instance) {
-      UserStore.instance = new UserStore();
-    }
-    return UserStore.instance;
-  }
-
-  getId = () => {
-    return new Promise<string>((resolve) =>
-      setTimeout(() => resolve(this.id), 300)
+  getUser = <T extends Base>(): Promise<T> => {
+    return new Promise<T>((resolve) =>
+      setTimeout(() => resolve(<T>this.state), 300)
     );
   };
 
-  setId = (id: string) => {
+  setUser = <T extends Base>(user: T): Promise<boolean> => {
     return new Promise<boolean>((resolve) => {
       setTimeout(() => {
-        this.id = id;
+        this.state = user;
         resolve(true);
       }, 500);
     });
   };
 }
+
+export const userStore = new UserStore();

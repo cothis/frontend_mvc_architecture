@@ -1,12 +1,10 @@
-import { UserStore } from '../model/UserStore';
+import { userStore, State } from '../model/UserStore';
 import View from '../view/view';
 
 class UserController {
-  private userStore: UserStore;
   private subscribers: Map<View, Function>;
 
-  constructor(userStore: UserStore) {
-    this.userStore = userStore;
+  constructor() {
     this.subscribers = new Map();
   }
 
@@ -19,20 +17,20 @@ class UserController {
   }
 
   async notify() {
-    const id = await this.requestGetId();
+    const user = await this.requestGetUser();
     this.subscribers.forEach((cb, view) => {
-      cb.call(view, id);
+      cb.call(view, user);
     });
   }
 
-  async requestSetId(id: string) {
-    const result = await this.userStore.setId(id);
+  async requestSetUser(user: Partial<State>) {
+    const result = await userStore.setUser(user);
     if (result) this.notify();
   }
 
-  async requestGetId() {
-    return await this.userStore.getId();
+  async requestGetUser() {
+    return await userStore.getUser();
   }
 }
 
-export const userController = new UserController(UserStore.getInstance());
+export const userController = new UserController();
